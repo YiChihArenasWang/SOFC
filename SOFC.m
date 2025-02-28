@@ -7,6 +7,7 @@ i0 = [0.2327, 0.38, 0.38];
 ias = [2.3, 2.8397, 3.1323];
 ics = [2.3, 2.8292, 3.1311];
 
+ test
 syms t
 coeff_ias = polyfit(temp,ias,2);
 iaseq = coeff_ias(1)*t^2 + coeff_ias(2)*t + coeff_ias(3);
