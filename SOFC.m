@@ -1,4 +1,4 @@
-function [H2dot,vapordot,heatdot] = SOFC(E,T,pH2,dt)
+function [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat] = SOFC(E,T,pH2,dt)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 temp = [700,750,800];
@@ -7,7 +7,6 @@ i0 = [0.2327, 0.38, 0.38];
 ias = [2.3, 2.8397, 3.1323];
 ics = [2.3, 2.8292, 3.1311];
 
- test
 syms t
 coeff_ias = polyfit(temp,ias,2);
 iaseq = coeff_ias(1)*t^2 + coeff_ias(2)*t + coeff_ias(3);
@@ -39,7 +38,7 @@ ntemp = 0;
 Vtemp = 10000;
 j=1;
 
-while Vtemp > 0
+while Vtemp > 0 
 
 i(j) = ntemp;    
 V(j) = V0 - ntemp.*res_real - 2.*R.*T./n./F .* log(1./2 .* (ntemp./i0_real + sqrt((ntemp./i0_real).^2 +4))) + R.*T./2./F .* log(1 - ntemp./ias_real)...
@@ -49,29 +48,38 @@ ntemp = ntemp + 0.01;
 j = j +1;
 
 end
-
-power = i.*V;
-[pdens,k] = max(power);
+rV = real(V);
+power = i.*rV;
+pdens_max = max(power);
 
 E_max = max(E);
-max_current = i(k);
 A = 500; %cm^2
-min_cells = E_max/(pdens*A);
+min_cells = E_max/(pdens_max*A);
+
+
 
 % Use min cells to find pdens req, find current relating to that power
 % Then find, h2dot
+pdens = E./min_cells./A;
+currentdraw = spline(power,i,pdens);
 
-H2dot = 1.05*10^(-8)  * current * A * min_cells; % kg/s
+
+H2dot = 1.05*10^(-8)  .* currentdraw .* A .* min_cells; % kg/s
+
+total_H2 = sum(H2dot.*dt);
 
 h2mol = H2dot.*1000./2.02;
 h20mol = h2mol;
 vapordot = h20mol.*18.02./1000; % kg/s
+total_vapor = sum(vapordot.*dt);
+
 
 enthalpykg25 = -285.8/18.02*1000; % kJ/kg
 e2 = enthalpykg25 + 4.18*(100-25);
 e3 = e2 + 2260;
 e4 = e3 + 1.996*(T - 373.15);
 heatdot = e4.*vapordot; % kJ/s
+total_heat = sum(heatdot.*dt);
 
 % Change code to implement arrays, measure total release
 % Try to show polarization curves and power density curves 
