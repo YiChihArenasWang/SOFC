@@ -1,4 +1,4 @@
-function [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat] = SOFC(E,T,pH2,dt)
+function [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw,min_cells] = SOFC(E,T,pH2,dt)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 temp = [700,750,800];
@@ -48,20 +48,25 @@ ntemp = ntemp + 0.01;
 j = j +1;
 
 end
-rV = real(V);
-power = i.*rV;
+
+V(V~=real(V)) = NaN;
+power = i.*V;
 pdens_max = max(power);
 
 E_max = max(E);
 A = 500; %cm^2
 min_cells = E_max/(pdens_max*A);
 
-
+figure(1)
+plot(i,power);
+xlabel("Current Density (J/cm^2)")
+ylabel("Power Density (W/cm^2)")
 
 % Use min cells to find pdens req, find current relating to that power
 % Then find, h2dot
 pdens = E./min_cells./A;
 currentdraw = spline(power,i,pdens);
+voltagedraw = spline(i,V,currentdraw);
 
 
 H2dot = 1.05*10^(-8)  .* currentdraw .* A .* min_cells; % kg/s
@@ -81,7 +86,7 @@ e4 = e3 + 1.996*(T - 373.15);
 heatdot = e4.*vapordot; % kJ/s
 total_heat = sum(heatdot.*dt);
 
-% Change code to implement arrays, measure total release
-% Try to show polarization curves and power density curves 
-% across different temperatures to see how accurate the curves are
+% change enthalpy calculations temperature dependence on cp
+% Add efficiency of converters, inverters, motors, propellers
+% 
 end
