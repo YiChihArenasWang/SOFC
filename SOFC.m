@@ -65,7 +65,17 @@ ylabel("Power Density (W/cm^2)")
 % Use min cells to find pdens req, find current relating to that power
 % Then find, h2dot
 pdens = E./min_cells./A;
-currentdraw = spline(power,i,pdens);
+[~,k] = max(power);
+i_cut = i;
+
+for d = 1:length(power)
+    if d > k
+        power(d) = NaN;
+        i_cut(d) = NaN;
+    end
+end
+
+currentdraw = spline(power,i_cut,pdens);
 voltagedraw = spline(i,V,currentdraw);
 
 

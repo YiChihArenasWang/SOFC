@@ -1,6 +1,6 @@
 clear
 
-E = [10000 8000 4000 2000 1000 5000 20000 0];
+E = struct2array(load("FC_power_required.mat"));
 T = 800;
 pH2 = 0.98;
 dt = 1;
