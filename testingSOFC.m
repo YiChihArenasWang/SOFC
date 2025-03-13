@@ -95,3 +95,8 @@ plot(time, heatdot, 'o-');
 xlabel("time (s)")
 ylabel("Heat per second needed (kJ/s)");
 title("Heat per second needed over time")
+
+totalmethane = sum(LNGflowrate); % each flow rate is at a time of one second so the sum 
+% of the flow rate is the total mass
+disp("The total methane consumption is: ");
+disp(totalmethane);
