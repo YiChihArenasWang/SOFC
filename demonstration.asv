@@ -1,16 +1,12 @@
-clear
-
 E = struct2array(load("FC_power_required.mat"));
 T = 800;
 pH2 = 0.98;
 dt = 1;
 
 [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw,cells] = SOFC(E,T,pH2,dt);
-%% 
+
 time = 0:(length(E)-1);
 time = time.*dt;
-
-
 
 figure(1)
 
@@ -44,13 +40,13 @@ plot(time,heatdot)
 xlabel('Time (s)');
 ylabel('Heat Flow (kJ/s)',"Rotation",0)
 
-
 subplot(7,1,7)
 plot(time,vapordot)
 xlabel('Time (s)');
 ylabel('Vapor Flow (kg/s)',"Rotation",0)
 
-%% fuel reformer
+%% Fuel Reformer
+
 [LNGflowrate,  H2Oflowrate, unreactedmethaneflowrate, COflowrate, H2Ounreactedflowrate, heatdot] = FuelReformer(H2dot);
 
 
@@ -72,9 +68,9 @@ hold on
 plot(time, H2Oflowrate, 'o-');
 hold off;
 xlabel("time (s)")
-ylabel("Fuel reformer input flow rates(kg/s)");
+ylabel("Sample fuel reformer input flow rates(kg/s)");
 legend('methane', 'steam');
-title('Fuel reformer input flow rates for a given H2 flow rate over time')
+title('Sample fuel reformer input flow rates for a given H2 flow rate over time')
 
 figure(5);
 plot(time, sampleH2dot, 'o-');
@@ -88,10 +84,14 @@ hold off;
 xlabel("time (s)")
 ylabel("Sample fuel reformer output flow rates (kg/s)");
 legend('H2', 'CO', 'unreacted methane', 'unreacted steam' );
-title('Fuel reformer output flow rates over time')
+title('Sample fuel reformer output flow rates over time')
 
 figure(6);
 plot(time, heatdot, 'o-');
 xlabel("time (s)")
-ylabel("Heat per second needed (kJ/s)");
-title("Heat per second needed over time")
+ylabel("Sample heat per second needed (kJ/s)");
+title("Sample heat per second needed over time")
+
+totalmethane = sum(LNGflowrate); % each flow rate is at a time of one second so the sum 
+% of the flow rate is the total mass
+disp(totalmethane);

@@ -20,7 +20,7 @@ function [LNGfr, H2Ofr, unreactedmethanefr, COfr, H2Ounreactedfr, heatdot] = Fue
     deltaH298 = 206; %kJ/mol
     Tf = 700 + 273.15; % K Chosen to match with conversion rate data
     deltaT = Tf - 298;
-    % which cp to use? temperature dependent
+    
     % at 25 deg C vals below
     CpCH4 =  2.226; % (kJ/(kg*K))
     CpH2O =  1.865; % steam, (kJ/(kg*K))
