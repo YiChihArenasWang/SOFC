@@ -55,5 +55,6 @@ pdens_max = max(power);
 E_max = max(E);
 A = 500; %cm^2
 min_cells = E_max/(pdens_max*A);
+min_cells = ceil(min_cells);
 
 end

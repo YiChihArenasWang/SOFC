@@ -4,7 +4,7 @@ E = struct2array(load("FC_power_required.mat"));
 T = 800;
 pH2 = 0.98;
 dt = 1;
-[cells] = SOFCsize(E,T,pH2);
+cells = SOFCsize(E,T,pH2);
 [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw] = SOFC(E,T,pH2,dt,cells);
 
 time = 0:(length(E)-1);
