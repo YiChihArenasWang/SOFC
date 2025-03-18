@@ -4,8 +4,8 @@ E = [10000 8000 4000 2000 1000 5000 20000 0];
 T = 800;
 pH2 = 0.98;
 dt = 1;
-
-[H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw,cells] = SOFC(E,T,pH2,dt);
+[cells] = SOFCsize(E,T,pH2);
+[H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw] = SOFC(E,T,pH2,dt,cells);
 %% 
 time = 0:(length(E)-1);
 time = time.*dt;

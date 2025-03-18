@@ -1,4 +1,4 @@
-function [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw,min_cells] = SOFC(E,T,pH2,dt)
+function [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw] = SOFC(E,T,pH2,dt,min_cells)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 temp = [700,750,800];
@@ -51,11 +51,10 @@ end
 
 V(V~=real(V)) = NaN;
 power = i.*V;
-pdens_max = max(power);
 
-E_max = max(E);
+
 A = 500; %cm^2
-min_cells = E_max/(pdens_max*A);
+
 
 figure(1)
 plot(i,power);
