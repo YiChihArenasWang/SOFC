@@ -131,6 +131,7 @@ totalheatfromreformer = sum(heatflowrate.*dt);
 disp("The total heat the reformer needs in kJ is: ");
 disp(totalheatfromreformer);
 
+% LNG Tank
 % mass fraction = mass of fuel/(mass of fuel and mass of tank)
 tankmassratio = 0.935;
 massfuelandtank = totalmethane/tankmassratio;
@@ -138,25 +139,8 @@ masstank = massfuelandtank - totalmethane;
 disp("The mass of the LNG tank in kg would be: ");
 disp(masstank);
 
-% heating up methane calculations
-deltaHvap = 510.4; % kJ/kg
-Tf = 700 + 273.15; % K to heat up fuel reformer to
-Ti = 110; % LNG storage temperature
-Tbp = -161.5 + 273.15; % boiling point
-
-% at 25 deg C vals below
-CpCH4g =  2.226; % (kJ/(kg*K))
-CpCH4l =  3.49; % (kJ/(kg*K))
-
-% liquid heating to boiling point
-q1= LNGflowrate.*CpCH4l.*(Tbp-Ti); % kg/s*(kJ/(kg*K))*K = kJ/s
-q2 = LNGflowrate.*deltaHvap; %kJ/s
-q3 = LNGflowrate.*CpCH4g.*(Tf-Tbp);
-
-heatdotLNGheating = q1+q2+q3;
-
-% combined enthalpy from methane heating, fuel reformer and SOFC
-enthalpyflowrate = heatdotLNGheating+heatflowrate+heatdot;
+% enthalpy calculations
+[enthalpyflowrate] = SystemEnthalpyCalculations(LNGflowrate, heatflowrate, heatdot);
 total_enthalpy = sum(enthalpyflowrate.*dt);
 disp("The total enthalpy from heating up the LNG fuel and the fuel reformer and SOFC running in kJ is: ");
 disp(total_enthalpy);
