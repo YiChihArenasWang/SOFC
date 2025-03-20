@@ -56,10 +56,10 @@ power = i.*V;
 A = 500; %cm^2
 
 
-figure(1)
-plot(i,power);
-xlabel("Current Density (J/cm^2)")
-ylabel("Power Density (W/cm^2)")
+figure(20)
+plot(i,power,"LineWidth", 2);
+xlabel("Current Density (J/cm^2)",'FontSize',13)
+ylabel("Power Density (W/cm^2)",'FontSize',13)
 
 % Use min cells to find pdens req, find current relating to that power
 % Then find, h2dot

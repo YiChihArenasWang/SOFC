@@ -54,7 +54,7 @@ ylabel('Vapor Flow (kg/s)')
 
 [LNGflowrate,  H2Oflowrate, unreactedmethaneflowrate, COflowrate, H2Ounreactedflowrate, heatdot] = FuelReformer(H2dot);
 
-
+%% 
 figure(3);
 plot(time, E);
 xlabel("time (s)")
@@ -101,3 +101,6 @@ totalmethane = sum(LNGflowrate.*dt); % each flow rate is at a time of one second
 % of the flow rate is the total mass
 disp("The total methane consumption is: ");
 disp(totalmethane);
+
+totalwater = sum(H2Oflowrate.*dt);
+totalunwater = sum(H2Ounreactedflowrate.*dt);
