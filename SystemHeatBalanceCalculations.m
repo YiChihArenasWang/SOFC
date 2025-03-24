@@ -1,4 +1,4 @@
-function [enthalpyflowrate] = SystemEnthalpyCalculations(LNGflowrate, heatdotfuelreformer, heatdotSOFC)
+function [totalheatflowrate, heatdotLNGheating] = SystemHeatBalanceCalculations(LNGflowrate, heatdotfuelreformer, heatdotSOFC)
     
     % heating up methane calculations
     deltaHvap = 510.4; % kJ/kg
@@ -17,6 +17,6 @@ function [enthalpyflowrate] = SystemEnthalpyCalculations(LNGflowrate, heatdotfue
     
     heatdotLNGheating = q1+q2+q3;
     
-    % combined enthalpy from methane heating, fuel reformer and SOFC
-    enthalpyflowrate = heatdotLNGheating+heatdotfuelreformer+heatdotSOFC;
+    % combined total heat flow from methane heating, fuel reformer and SOFC
+    totalheatflowrate = heatdotLNGheating+heatdotfuelreformer+heatdotSOFC;
 end
