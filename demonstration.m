@@ -56,70 +56,70 @@ ylabel('Vapor Flow (kg/s)')
 
 figure(2);
 subplot(4,1,1);
-plot(time, E, 'o-', LineWidth=2);
+plot(time, E, LineWidth=2);
 xlabel("time (s)", FontSize=14)
 ylabel("Power Consumption (W)", FontSize=14);
 title('Power Consumption over time (Input to SOFC function)', FontSize=14);
 
 subplot(4,1,2);
-plot(time, H2dot, 'o-', LineWidth=2);
+plot(time, H2dot, LineWidth=2);
 xlabel("time (s)", FontSize=14);
-ylabel("Sample H2 flow rate (kg/s)", FontSize=14);
-title('Sample H2 flow rate over time (Output of SOFC and Input to Fuel Reformer function)', FontSize=14);
+ylabel("H2 flow rate (kg/s)", FontSize=14);
+title('H2 flow rate over time (Output of SOFC and Input to Fuel Reformer function)', FontSize=14);
 
 % checking equations worked out right
 subplot(4,1,3);
-plot(time, H2Oflowrate, 'o', 'LineStyle',':', LineWidth=3);
+plot(time, H2Oflowrate, 'LineStyle',':', LineWidth=3);
 hold on
-plot(time, H2Ocheckfr, 'square-', LineWidth=2);
+plot(time, H2Ocheckfr, '--', LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
-ylabel("Fuel reformer input flow rates(kg/s)", FontSize=14);
+ylabel("Steam Flow Rates(kg/s)", FontSize=14);
 legend('steam from S/C ratio', 'steam calculated');
-title('Checking steam flow rates match', FontSize=14);
+title('Steam Flow Rate Consistency Check', FontSize=14);
 
 subplot(4,1,4);
-plot(time, H2dot, 'o', 'LineStyle',':', LineWidth=3);
+plot(time, H2dot,'LineStyle',':', LineWidth=3);
 hold on
-plot(time, H2fr, 'square-', LineWidth=2);
+plot(time, H2fr, '--', LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
-ylabel("Fuel reformer input flow rates(kg/s)", FontSize=14);
+ylabel("H2 flow rates(kg/s)", FontSize=14);
 legend('H2 dot input', 'H2 flow rate calculated');
-title('Checking H2 flow rates match', FontSize=14);
+title('H2 Flow Rates Consistency Check', FontSize=14);
 
 figure(3);
 subplot(3,1,1);
-plot(time, LNGflowrate, 'o-', LineWidth=2);
+plot(time, LNGflowrate, LineWidth=2);
 hold on
-plot(time, H2Oflowrate, 'o-', LineWidth=2);
+plot(time, H2Oflowrate, LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
-ylabel("Fuel reformer input flow rates(kg/s)", FontSize=14);
+ylabel("Input Flow Rates(kg/s)", FontSize=14);
 legend('methane', 'steam');
-title('Fuel reformer input flow rates for a given H2 flow rate over time', FontSize=14);
+title('Fuel Reformer Input Flow Rates for a Given H2 Flow Rate over Time', FontSize=14);
 
 subplot(3,1,2);
-plot(time, H2dot, 'o-', LineWidth=2);
+plot(time, H2dot, LineWidth=2);
 hold on;
-plot(time, COflowrate, 'o-', LineWidth=2);
+plot(time, COflowrate, LineWidth=2);
 hold on;
-plot(time, CO2flowrate, 'o-', LineWidth=2);
+plot(time, CO2flowrate, LineWidth=2);
 hold on;
-plot(time, unreactedmethaneflowrate, 'o-', LineWidth=2);
+plot(time, unreactedmethaneflowrate, LineWidth=2);
 hold on;
-plot(time, H2Ounreactedflowrate, 'o-', LineWidth=2);
+plot(time, H2Ounreactedflowrate, LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
-ylabel("Sample fuel reformer output flow rates (kg/s)", FontSize=14);
+ylabel("Output Flow Rates (kg/s)", FontSize=14);
 legend('H2', 'CO', 'CO2', 'unreacted methane', 'unreacted steam');
-title('Fuel reformer output flow rates over time', FontSize=14)
+title('Fuel Reformer Output Flow Rates over Time', FontSize=14)
 
 subplot(3,1,3);
-plot(time, heatflowrate, 'o-', LineWidth=2);
+plot(time, heatflowrate, LineWidth=2);
 xlabel("time (s)", FontSize=14);
-ylabel("Heat per second needed (kJ/s)", FontSize=14);
-title("Heat per second needed over time", FontSize=14)
+ylabel("Heat per Second Needed (kJ/s)", FontSize=14);
+title("Heat per Second Needed over Time", FontSize=14)
 
 
 % display totals
@@ -133,11 +133,9 @@ disp(totalheatfromreformer);
 
 % LNG Tank
 % mass fraction = mass of fuel/(mass of fuel and mass of tank)
-tankmassratio = 0.935;
-massfuelandtank = totalmethane/tankmassratio;
-masstank = massfuelandtank - totalmethane;
+[tankmass] = LNGTank(LNGflowrate, dt);
 disp("The mass of the LNG tank in kg would be: ");
-disp(masstank);
+disp(tankmass);
 
 % enthalpy calculations
 [enthalpyflowrate] = SystemEnthalpyCalculations(LNGflowrate, heatflowrate, heatdot);
