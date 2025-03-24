@@ -54,7 +54,7 @@ ylabel('Vapor Flow (kg/s)')
 [LNGflowrate,  H2Oflowrate, unreactedmethaneflowrate, COflowrate, CO2flowrate, H2Ounreactedflowrate, heatflowrate, H2Ocheckfr, H2fr] = FuelReformer(H2dot);
 
 
-figure(2);
+figure(3);
 subplot(4,1,1);
 plot(time, E, LineWidth=2);
 xlabel("time (s)", FontSize=14)
@@ -88,7 +88,7 @@ ylabel("H2 flow rates(kg/s)", FontSize=14);
 legend('H2 dot input', 'H2 flow rate calculated');
 title('H2 Flow Rates Consistency Check', FontSize=14);
 
-figure(3);
+figure(4);
 subplot(3,1,1);
 plot(time, LNGflowrate, LineWidth=2);
 hold on
@@ -138,7 +138,21 @@ disp("The mass of the LNG tank in kg would be: ");
 disp(tankmass);
 
 % enthalpy calculations
-[enthalpyflowrate] = SystemEnthalpyCalculations(LNGflowrate, heatflowrate, heatdot);
-total_enthalpy = sum(enthalpyflowrate.*dt);
+[totalheatflowrate, LNGheatingdot] = SystemHeatBalanceCalculations(LNGflowrate, heatflowrate, heatdot);
+total_heat = sum(totalheatflowrate.*dt);
 disp("The total enthalpy from heating up the LNG fuel and the fuel reformer and SOFC running in kJ is: ");
-disp(total_enthalpy);
+disp(total_heat);
+
+figure(5);
+plot(time, heatdot, LineWidth=2);
+hold on;
+plot(time, heatflowrate, LineWidth=2);
+hold on;
+plot(time, LNGheatingdot, LineWidth=2);
+hold on;
+plot(time, totalheatflowrate,LineWidth=2);
+hold off;
+xlabel("time (s)", FontSize=14);
+ylabel("Heat per Second Needed (kJ/s)", FontSize=14);
+title("Heat per Second Comparisons over Time", FontSize=14)
+legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'Total System Heat');

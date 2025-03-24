@@ -141,7 +141,21 @@ disp("The mass of the LNG tank in kg would be: ");
 disp(tankmass);
 
 % enthalpy calculations
-[enthalpyflowrate] = SystemEnthalpyCalculations(LNGflowrate, heatflowrate, heatdot);
-total_enthalpy = sum(enthalpyflowrate.*dt);
+[totalheatflowrate, LNGheatingdot] = SystemHeatBalanceCalculations(LNGflowrate, heatflowrate, heatdot);
+total_heat = sum(totalheatflowrate.*dt);
 disp("The total enthalpy from heating up the LNG fuel and the fuel reformer and SOFC running in kJ is: ");
-disp(total_enthalpy);
+disp(total_heat);
+
+figure(5);
+plot(time, heatdot, 'o-', LineWidth=2);
+hold on;
+plot(time, heatflowrate, 'o-', LineWidth=2);
+hold on;
+plot(time, LNGheatingdot, 'o-', LineWidth=2);
+hold on;
+plot(time, totalheatflowrate, 'o-', LineWidth=2);
+hold off;
+xlabel("time (s)", FontSize=14);
+ylabel("Heat per Second Needed (kJ/s)", FontSize=14);
+title("Heat per Second Comparisons over Time", FontSize=14)
+legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'Total System Heat');
