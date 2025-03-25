@@ -1,7 +1,7 @@
 clear
 
 E = struct2array(load("FC_power_required.mat"));
-E = E(2,:);
+E = E(2,:).*1000;
 T = 800;
 pH2 = 0.98;
 dt = 1;
@@ -155,3 +155,12 @@ xlabel("time (s)", FontSize=14);
 ylabel("Heat per Second Needed (kJ/s)", FontSize=14);
 title("Heat per Second Comparisons over Time", FontSize=14)
 legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'Total System Heat');
+
+%%
+
+[warray,wneeded] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate);
+figure(5) 
+t2 = 1:length(warray);
+
+plot(t2,warray)
+
