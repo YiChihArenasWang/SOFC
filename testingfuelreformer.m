@@ -9,50 +9,47 @@ pH2 = 0.98;
 dt = 1;
 cells = SOFCsize(E,T,pH2);
 [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw] = SOFC(E,T,pH2,dt,cells);
-%% 
+
 time = 0:(length(E)-1);
 time = time.*dt;
-
-
-
+%%
 figure(1)
 
-subplot(7,1,1)
-plot(time,E)
-xlabel('Time (s)');
-ylabel('Power Consumption (W)',"Rotation",0)
+subplot(4,2,[1 2])
+plot(time,E, LineWidth=2)
+xlabel('Time (s)','FontSize',13);
+ylabel('Power Consumption (W)','FontSize',13)
 
-subplot(7,1,2)
-plot(time,pdens)
-xlabel('Time (s)');
-ylabel('Power Density (W/cm^2)',"Rotation",0)
+subplot(4,2,3)
+plot(time,pdens, LineWidth=2)
+xlabel('Time (s)','FontSize',13);
+ylabel('Power Density (W/cm^2)','FontSize',13)
 
-subplot(7,1,3)
-plot(time,voltagedraw)
-xlabel('Time (s)');
-ylabel('Voltage (V)',"Rotation",0)
+subplot(4,2,5)
+plot(time,voltagedraw, LineWidth=2)
+xlabel('Time (s)','FontSize',13);
+ylabel('Voltage (V)','FontSize',13)
 
-subplot(7,1,4)
-plot(time,currentdraw)
-xlabel('Time (s)');
-ylabel('Current Density (J/cm^2)',"Rotation",0)
-
-subplot(7,1,5)
-plot(time,H2dot)
-xlabel('Time (s)');
-ylabel('Hydrogen Consumption (kg/s)',"Rotation",0)
-
-subplot(7,1,6)
-plot(time,heatdot)
-xlabel('Time (s)');
-ylabel('Heat Flow (kJ/s)',"Rotation",0)
+subplot(4,2,7)
+plot(time,currentdraw, LineWidth=2)
+xlabel('Time (s)','FontSize',13);
+ylabel('Current Density (J/cm^2)','FontSize',13)
 
 
-subplot(7,1,7)
-plot(time,vapordot)
-xlabel('Time (s)');
-ylabel('Vapor Flow (kg/s)',"Rotation",0)
+subplot(4,2,4)
+plot(time,H2dot, LineWidth=2)
+xlabel('Time (s)','FontSize',13);
+ylabel('Hydrogen Consumption (kg/s)','FontSize',13)
 
+subplot(4,2,6)
+plot(time,heatdot, LineWidth=2)
+xlabel('Time (s)','FontSize',13);
+ylabel('Heat Flow (kJ/s)','FontSize',13)
+
+subplot(4,2,8)
+plot(time,vapordot, LineWidth=2)
+xlabel('Time (s)','FontSize',13);
+ylabel('Vapor Flow (kg/s)','FontSize',13)
 %% fuel reformer
 [LNGflowrate,  H2Oflowrate, unreactedmethaneflowrate, COflowrate, CO2flowrate, H2Ounreactedflowrate, heatflowrate, H2Ocheckfr, H2fr] = FuelReformer(H2dot);
 
@@ -146,7 +143,7 @@ total_heat = sum(totalheatflowrate.*dt);
 disp("The total enthalpy from heating up the LNG fuel and the fuel reformer and SOFC running in kJ is: ");
 disp(total_heat);
 
-figure(5);
+figure(4);
 plot(time, heatdot, 'o-', LineWidth=2);
 hold on;
 plot(time, heatflowrate, 'o-', LineWidth=2);
@@ -159,3 +156,12 @@ xlabel("time (s)", FontSize=14);
 ylabel("Heat per Second Needed (kJ/s)", FontSize=14);
 title("Heat per Second Comparisons over Time", FontSize=14)
 legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'Total System Heat');
+
+[warray,wtank,winitial] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate);
+figure(5) 
+t2 = 1:length(wtank);
+
+plot(t2, warray);
+
+figure(6)
+plot(t2,wtank);

@@ -1,7 +1,7 @@
 clear
 
-E = struct2array(load("FC_power_required.mat"));
-E = E(2,:).*1000;
+load("FC_power_required.mat");
+E = thrust_power_required(2,:).*1000;
 T = 800;
 pH2 = 0.98;
 dt = 1;
@@ -158,8 +158,11 @@ legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'To
 
 %%
 
-[warray,wtank,winitial] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate);
+[warray,wtank,winitial] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15);
 figure(5) 
 t2 = 1:length(wtank);
 
-plot(t2,wtank)
+plot(t2,wtank);
+xlabel("time (s)", FontSize=14);
+ylabel("Steam per Second Needed from Tank (kg/s)", FontSize=14);
+title("Steam per Second Needed from Tank over Time", FontSize=14)

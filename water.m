@@ -1,12 +1,12 @@
-function [wbalance,wtank,winitial] = water(SOFC,FRneed,FRrelease)
+function [wbalance,wtank,winitial] = water(SOFC,FRneed,FRrelease, SOFCtimedelay, FRtimedelay)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
-SOFCdelay = zeros(1,30);
-Recycledelay = zeros(1,15);
+SOFCdelay = zeros(1,SOFCtimedelay);
+Recycledelay = zeros(1,FRtimedelay);
 
 SOFC = [SOFCdelay SOFC];
-FRrelease = [Recycledelay FRrelease zeros(1,15)];
+FRrelease = [Recycledelay FRrelease zeros(1,SOFCtimedelay-FRtimedelay)];
 FRneed = [FRneed zeros(1,30)];
 
 wbalance = FRneed - SOFC - FRrelease;
