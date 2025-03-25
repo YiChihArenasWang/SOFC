@@ -53,7 +53,7 @@ ylabel('Vapor Flow (kg/s)','FontSize',13)
 [LNGflowrate,  H2Oflowrate, unreactedmethaneflowrate, COflowrate, CO2flowrate, H2Ounreactedflowrate, heatflowrate, H2Ocheckfr, H2fr] = FuelReformer(H2dot);
 
 
-figure(3);
+figure(2);
 subplot(4,1,1);
 plot(time, E, LineWidth=2);
 xlabel("time (s)", FontSize=14)
@@ -87,7 +87,7 @@ ylabel("H2 flow rates(kg/s)", FontSize=14);
 legend('H2 dot input', 'H2 flow rate calculated');
 title('H2 Flow Rates Consistency Check', FontSize=14);
 
-figure(4);
+figure(3);
 subplot(3,1,1);
 plot(time, LNGflowrate, LineWidth=2);
 hold on
@@ -142,7 +142,7 @@ total_heat = sum(totalheatflowrate.*dt);
 disp("The total enthalpy from heating up the LNG fuel and the fuel reformer and SOFC running in kJ is: ");
 disp(total_heat);
 
-figure(5);
+figure(4);
 plot(time, heatdot, LineWidth=2);
 hold on;
 plot(time, heatflowrate, LineWidth=2);
