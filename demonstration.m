@@ -158,9 +158,8 @@ legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'To
 
 %%
 
-[warray,wneeded] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate);
+[warray,wtank,winitial] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate);
 figure(5) 
-t2 = 1:length(warray);
+t2 = 1:length(wtank);
 
-plot(t2,warray)
-
+plot(t2,wtank)
