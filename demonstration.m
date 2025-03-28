@@ -2,6 +2,8 @@ clear
 
 load("FC_power_required.mat");
 E = thrust_power_required(2,:).*1000;
+load("mission_t_v_h.mat");
+M = mission_t_v_h(3,:);
 T = 800;
 pH2 = 0.98;
 dt = 1;
@@ -13,10 +15,15 @@ time = time.*dt;
 %%
 figure(1)
 
-subplot(4,2,[1 2])
+subplot(4,2,1)
 plot(time,E, LineWidth=2)
 xlabel('Time (s)','FontSize',13);
 ylabel('Power Consumption (W)','FontSize',13)
+
+subplot(4,2,2)
+plot(time,M, LineWidth=2)
+xlabel('Time (s)','FontSize',13);
+ylabel('Mission Profile Altitude (m)','FontSize',13)
 
 subplot(4,2,3)
 plot(time,pdens, LineWidth=2)
@@ -164,5 +171,5 @@ t2 = 1:length(wtank);
 
 plot(t2,wtank);
 xlabel("time (s)", FontSize=14);
-ylabel("Steam per Second Needed from Tank (kg/s)", FontSize=14);
-title("Steam per Second Needed from Tank over Time", FontSize=14)
+ylabel("Steam in Tank (kg)", FontSize=14);
+title("Steam in Tank over Time", FontSize=14)

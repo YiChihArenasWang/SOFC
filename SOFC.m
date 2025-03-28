@@ -59,6 +59,7 @@ A = 500; %cm^2
 
 figure(20)
 plot(i,power,"LineWidth", 2);
+ylim([0 1.2]);
 xlabel("Current Density (A/cm^2)",'FontSize',13)
 ylabel("Power Density (W/cm^2)",'FontSize',13)
 
