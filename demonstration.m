@@ -165,11 +165,34 @@ legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'To
 
 %%
 
-[warray,wtank,winitial] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15);
+[warray,wtank,winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15);
 figure(5) 
-t2 = 1:length(wtank);
 
-plot(t2,wtank);
+subplot(3,1,1);
+plot(t2, FRneeddot, LineWidth=2);
+hold on;
+plot(t2, SOFCvapordot, LineWidth=2);
+hold on;
+plot(t2, FRreleasedot, LineWidth=2);
+hold on;
+hold off;
 xlabel("time (s)", FontSize=14);
-ylabel("Steam in Tank (kg)", FontSize=14);
-title("Steam in Tank over Time", FontSize=14)
+ylabel("Steam per Second (kg/s)", FontSize=14);
+title("Steam per Second Comparisons over Time", FontSize=14);
+legend('Steam into Reformer', 'Steam Created by SOFC', 'Unreacted Steam out of Reformer');
+
+subplot(3,1,2);
+plot(t2, warray, LineWidth=2);
+xlabel("time (s)", FontSize=14);
+ylabel("Steam Balance (kg/s)", FontSize=14);
+title("Steam Balance per Second Comparisons over Time", FontSize=14);
+
+subplot(3,1,3);
+plot(t2, wtank, LineWidth=2);
+xlabel("time (s)", FontSize=14);
+ylabel("Steam Needed From Tank (kg/s)", FontSize=14);
+title("Steam Needed From Tank per Second over Time", FontSize=14);
+
+disp("The initial water amount needed in the tank in kg would be : ");
+disp(-winitial);
+
