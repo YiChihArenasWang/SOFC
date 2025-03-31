@@ -106,19 +106,19 @@ legend('methane', 'steam');
 title('Fuel Reformer Input Flow Rates for a Given H2 Flow Rate over Time', FontSize=14);
 
 subplot(3,1,2);
+plot(time, unreactedmethaneflowrate, LineWidth=2);
+hold on;
+plot(time, H2Ounreactedflowrate, LineWidth=2);
+hold on;
 plot(time, H2dot, LineWidth=2);
 hold on;
 plot(time, COflowrate, LineWidth=2);
 hold on;
 plot(time, CO2flowrate, LineWidth=2);
-hold on;
-plot(time, unreactedmethaneflowrate, LineWidth=2);
-hold on;
-plot(time, H2Ounreactedflowrate, LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
 ylabel("Output Flow Rates (kg/s)", FontSize=14);
-legend('H2', 'CO', 'CO2', 'unreacted methane', 'unreacted steam');
+legend('unreacted methane', 'unreacted steam', 'H2', 'CO', 'CO2');
 title('Fuel Reformer Output Flow Rates over Time', FontSize=14)
 
 subplot(3,1,3);
@@ -165,10 +165,12 @@ legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'To
 
 %%
 
-[warray,wtank,winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15);
+[warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15, 5);
+
 figure(5) 
 
-subplot(3,1,1);
+
+subplot(4,1,1);
 plot(t2, FRneeddot, LineWidth=2);
 hold on;
 plot(t2, SOFCvapordot, LineWidth=2);
@@ -177,22 +179,31 @@ plot(t2, FRreleasedot, LineWidth=2);
 hold on;
 hold off;
 xlabel("time (s)", FontSize=14);
-ylabel("Steam per Second (kg/s)", FontSize=14);
+ylabel("Steam per Second (kg/s)", FontSize=13);
 title("Steam per Second Comparisons over Time", FontSize=14);
 legend('Steam into Reformer', 'Steam Created by SOFC', 'Unreacted Steam out of Reformer');
 
-subplot(3,1,2);
+subplot(4,1,2);
 plot(t2, warray, LineWidth=2);
-xlabel("time (s)", FontSize=14);
+xlabel("time (s)", FontSize=13);
 ylabel("Steam Balance (kg/s)", FontSize=14);
 title("Steam Balance per Second Comparisons over Time", FontSize=14);
 
-subplot(3,1,3);
+subplot(4,1,3);
 plot(t2, wtank, LineWidth=2);
-xlabel("time (s)", FontSize=14);
-ylabel("Steam Needed From Tank (kg/s)", FontSize=14);
-title("Steam Needed From Tank per Second over Time", FontSize=14);
+xlabel("time (s)", FontSize=13);
+ylabel("Steam in Tank (kg)", FontSize=14);
+title("Steam in Tank over Time", FontSize=14);
 
-disp("The initial water amount needed in the tank in kg would be : ");
-disp(-winitial);
+subplot(4,1,4);
+plot(t2, excessH2O, LineWidth=2);
+xlabel("time (s)", FontSize=13);
+ylabel("Steam Exhaust (kg)", FontSize=14);
+title("Steam Exhausted over Time", FontSize=14);
 
+disp("The minimum amount of water needed in the tank in kg would be: ");
+disp(wmin);
+disp("The initial water amount in the tank in kg would be : ");
+disp(winitial);
+disp("The total amount of steam exhaust in kg is: ")
+disp(totalexhauststeam);
