@@ -8,17 +8,17 @@ ias = [2.3, 2.8397, 3.1323];
 ics = [2.3, 2.8292, 3.1311];
 
 syms t
-coeff_ias = polyfit(temp,ias,2);
-iaseq = coeff_ias(1)*t^2 + coeff_ias(2)*t + coeff_ias(3);
+coeff_ias = polyfit(temp,ias,1);
+iaseq = coeff_ias(1)*t + coeff_ias(2);
 
-coeff_res = polyfit(temp,res,2);
-reseq = coeff_res(1)*t^2 + coeff_res(2)*t + coeff_res(3);
+coeff_res = polyfit(temp,res,1);
+reseq = coeff_res(1)*t + coeff_res(2);
 
-coeff_ics = polyfit(temp,ics,2);
-icseq = coeff_ics(1)*t^2 + coeff_ics(2)*t + coeff_ics(3);
+coeff_ics = polyfit(temp,ics,1);
+icseq = coeff_ics(1)*t + coeff_ics(2);
 
-coeff_i0 = polyfit(temp,i0,2);
-i0eq = coeff_i0(1)*t^2 + coeff_i0(2)*t + coeff_i0(3);
+coeff_i0 = polyfit(temp,i0,1);
+i0eq = coeff_i0(1)*t + coeff_i0(2);
 
 res_real = subs(reseq,t,T);
 ias_real = subs(iaseq,t,T);
@@ -52,7 +52,8 @@ end
 
 V(V~=real(V)) = NaN;
 power = i.*V;
-
+figure(19)
+plot(i,V)
 
 A = 500; %cm^2
 
