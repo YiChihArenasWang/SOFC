@@ -163,14 +163,14 @@ plot(time, LNGheatingdot, LineWidth=2);
 hold on;
 plot(time, totalheatflowrate,LineWidth=2);
 hold off;
-xlabel("time (s)", FontSize=14);
-ylabel("Heat per Second Needed (kJ/s)", FontSize=14);
-title("Heat per Second Comparisons over Time", FontSize=14)
-legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'Total System Heat');
+xlabel("time (s)", FontSize=18);
+ylabel("Heat per Second Needed (kJ/s)", FontSize=18);
+title("Heat per Second Comparisons over Time", FontSize=18)
+legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'Total System Heat', fontsize=18);
 
 %%
 
-[warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam] = water(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15, 5);
+[warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam] = steamrecycle(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15);
 
 figure(5) 
 

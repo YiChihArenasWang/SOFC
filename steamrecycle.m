@@ -1,4 +1,4 @@
-function [wbalance, H2Olevelintank, wmin, initalwaterintank, SOFC, FRneed, FRrelease, t2, excessH2O, totalexhauststeam] = water(SOFC,FRneed,FRrelease, SOFCtimedelay, FRtimedelay, tanksafetymargin)
+function [wbalance, H2Olevelintank, wmin, initalwaterintank, SOFC, FRneed, FRrelease, t2, excessH2O, totalexhauststeam] = steamrecycle(SOFC,FRneed,FRrelease, SOFCtimedelay, FRtimedelay)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -25,6 +25,7 @@ end
 % wtank negative means steam is used from tank, positive is excess steam
 % (amount in tank starts at 0)
 wmin = -min(wtankstartat0);
+tanksafetymargin = 0.1*wmin;
 initalwaterintank = wmin + tanksafetymargin;
 
 H2Olevelintank = zeros(1, length(wbalance)); 
