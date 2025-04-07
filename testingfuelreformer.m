@@ -155,7 +155,7 @@ hold off;
 xlabel("time (s)", FontSize=18);
 ylabel("Heat per Second Needed (kJ/s)", FontSize=18);
 title("Heat per Second Comparisons over Time", FontSize=18)
-legend('SOFC Heat', 'Fuel Reformer Heat', 'Heating up LNG Heating Required', 'Total System Heat', fontsize=18);
+legend('SOFC Heat', 'Fuel Reformer Heat', 'Heat Required to Heat up Methane', 'Total System Heat', fontsize=18);
 
 [warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam] = steamrecycle(vapordot,H2Oflowrate,H2Ounreactedflowrate, 4, 2);
 
