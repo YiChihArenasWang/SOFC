@@ -1,9 +1,10 @@
-clear;
-close all;
-clc;
+clear
 
-% testing WSG
-E = [10000 8000 4000 2000 1000 5000 20000 0];
+load("FC_power_required.mat");
+E = thrust_power_required(2,:).*1000;
+load("mission_t_v_h.mat");
+M = mission_t_v_h(3,:);
+V = mission_t_v_h(2,:);
 T = 800;
 pH2 = 0.98;
 dt = 1;
@@ -15,63 +16,73 @@ time = time.*dt;
 %%
 figure(1)
 
-subplot(4,2,[1 2])
+subplot(4,2,2)
 plot(time,E, LineWidth=2)
-xlabel('Time (s)','FontSize',13);
-ylabel('Power Consumption (W)','FontSize',13)
+xlabel('Time (s)','FontSize',14);
+ylabel('Power Consumption (W)','FontSize',14)
+
+subplot(4,2,1)
+plot(time,M, LineWidth=2)
+xlabel('Time (s)','FontSize',14);
+ylabel('Altitude (m)','FontSize',14)
+hold on
+yyaxis right
+plot(time,V, Linewidth=2);
+ylabel('Velocity (m/s)','FontSize',14)
 
 subplot(4,2,3)
 plot(time,pdens, LineWidth=2)
-xlabel('Time (s)','FontSize',13);
-ylabel('Power Density (W/cm^2)','FontSize',13)
+xlabel('Time (s)','FontSize',14);
+ylabel('Power Density (W/cm^2)','FontSize',14)
 
 subplot(4,2,5)
 plot(time,voltagedraw, LineWidth=2)
-xlabel('Time (s)','FontSize',13);
-ylabel('Voltage (V)','FontSize',13)
+xlabel('Time (s)','FontSize',14);
+ylabel('Voltage (V)','FontSize',14)
 
 subplot(4,2,7)
 plot(time,currentdraw, LineWidth=2)
-xlabel('Time (s)','FontSize',13);
-ylabel('Current Density (J/cm^2)','FontSize',13)
+xlabel('Time (s)','FontSize',14);
+ylabel('Current Density (J/cm^2)','FontSize',14)
 
 
 subplot(4,2,4)
 plot(time,H2dot, LineWidth=2)
-xlabel('Time (s)','FontSize',13);
-ylabel('Hydrogen Consumption (kg/s)','FontSize',13)
+xlabel('Time (s)','FontSize',14);
+ylabel('Hydrogen Consumption (kg/s)','FontSize',14)
 
 subplot(4,2,6)
 plot(time,heatdot, LineWidth=2)
-xlabel('Time (s)','FontSize',13);
-ylabel('Heat Flow (kJ/s)','FontSize',13)
+xlabel('Time (s)','FontSize',14);
+ylabel('Heat Flow (kJ/s)','FontSize',14)
 
 subplot(4,2,8)
 plot(time,vapordot, LineWidth=2)
-xlabel('Time (s)','FontSize',13);
-ylabel('Vapor Flow (kg/s)','FontSize',13)
+xlabel('Time (s)','FontSize',14);
+ylabel('Vapor Flow (kg/s)','FontSize',14)
+
 %% fuel reformer
 [LNGflowrate,  H2Oflowrate, unreactedmethaneflowrate, COflowrate, CO2flowrate, H2Ounreactedflowrate, heatflowrate, H2Ocheckfr, H2fr] = FuelReformer(H2dot);
 
 
 figure(2);
 subplot(4,1,1);
-plot(time, E, 'o-', LineWidth=2);
+plot(time, E, LineWidth=2);
 xlabel("time (s)", FontSize=14)
 ylabel("Power Consumption (W)", FontSize=14);
 title('Power Consumption over time (Input to SOFC function)', FontSize=14);
 
 subplot(4,1,2);
-plot(time, H2dot, 'o-', LineWidth=2);
+plot(time, H2dot, LineWidth=2);
 xlabel("time (s)", FontSize=14);
 ylabel("H2 flow rate (kg/s)", FontSize=14);
 title('H2 flow rate over time (Output of SOFC and Input to Fuel Reformer function)', FontSize=14);
 
 % checking equations worked out right
 subplot(4,1,3);
-plot(time, H2Oflowrate, 'o', 'LineStyle',':', LineWidth=3);
+plot(time, H2Oflowrate, 'LineStyle',':', LineWidth=3);
 hold on
-plot(time, H2Ocheckfr, 'square-', LineWidth=2);
+plot(time, H2Ocheckfr, '--', LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
 ylabel("Steam Flow Rates(kg/s)", FontSize=14);
@@ -79,9 +90,9 @@ legend('steam from S/C ratio', 'steam calculated');
 title('Steam Flow Rate Consistency Check', FontSize=14);
 
 subplot(4,1,4);
-plot(time, H2dot, 'o','LineStyle',':', LineWidth=3);
+plot(time, H2dot,'LineStyle',':', LineWidth=3);
 hold on
-plot(time, H2fr, 'square-', LineWidth=2);
+plot(time, H2fr, '--', LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
 ylabel("H2 flow rates(kg/s)", FontSize=14);
@@ -90,9 +101,9 @@ title('H2 Flow Rates Consistency Check', FontSize=14);
 
 figure(3);
 subplot(3,1,1);
-plot(time, LNGflowrate, 'o-', LineWidth=2);
+plot(time, LNGflowrate, LineWidth=2);
 hold on
-plot(time, H2Oflowrate, 'o-', LineWidth=2);
+plot(time, H2Oflowrate, LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
 ylabel("Input Flow Rates(kg/s)", FontSize=14);
@@ -100,15 +111,15 @@ legend('methane', 'steam');
 title('Fuel Reformer Input Flow Rates for a Given H2 Flow Rate over Time', FontSize=14);
 
 subplot(3,1,2);
-plot(time, unreactedmethaneflowrate, 'o-', LineWidth=2);
+plot(time, unreactedmethaneflowrate, LineWidth=2);
 hold on;
-plot(time, H2Ounreactedflowrate, 'o-', LineWidth=2);
+plot(time, H2Ounreactedflowrate, LineWidth=2);
 hold on;
-plot(time, H2dot, 'o-', LineWidth=2);
+plot(time, H2dot, LineWidth=2);
 hold on;
-plot(time, COflowrate, 'o-', LineWidth=2);
+plot(time, COflowrate, LineWidth=2);
 hold on;
-plot(time, CO2flowrate, 'o-', LineWidth=2);
+plot(time, CO2flowrate, LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=14)
 ylabel("Output Flow Rates (kg/s)", FontSize=14);
@@ -116,7 +127,7 @@ legend('unreacted methane', 'unreacted steam', 'H2', 'CO', 'CO2');
 title('Fuel Reformer Output Flow Rates over Time', FontSize=14)
 
 subplot(3,1,3);
-plot(time, heatflowrate, 'o-', LineWidth=2);
+plot(time, heatflowrate, LineWidth=2);
 xlabel("time (s)", FontSize=14);
 ylabel("Heat per Second Needed (kJ/s)", FontSize=14);
 title("Heat per Second Needed over Time", FontSize=14)
@@ -160,17 +171,19 @@ ylabel("Heat per Second Needed (kJ/s)", FontSize=18);
 title("Heat per Second Comparisons over Time", FontSize=18)
 legend('SOFC Heat', 'Fuel Reformer Heat', 'Heat Required to Heat up Methane', 'Heat Required to Heat up Steam', 'Total System Heat', fontsize=18);
 
-[warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam] = steamrecycle(vapordot,H2Oflowrate,H2Ounreactedflowrate, 4, 2);
+%% steam recycle
+
+[warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam, wtankflow] = steamrecyclewatertank(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15);
 
 figure(5) 
 
 
 subplot(4,1,1);
-plot(t2, FRneeddot, 'o-', LineWidth=2);
+plot(t2, FRneeddot, LineWidth=2);
 hold on;
-plot(t2, SOFCvapordot, 'o-', LineWidth=2);
+plot(t2, SOFCvapordot, LineWidth=2);
 hold on;
-plot(t2, FRreleasedot, 'o-', LineWidth=2);
+plot(t2, FRreleasedot, LineWidth=2);
 hold on;
 hold off;
 xlabel("time (s)", FontSize=14);
@@ -179,19 +192,19 @@ title("Steam per Second Comparisons over Time", FontSize=14);
 legend('Steam into Reformer', 'Steam Created by SOFC', 'Unreacted Steam out of Reformer');
 
 subplot(4,1,2);
-plot(t2, warray, 'o-', LineWidth=2);
+plot(t2, warray, LineWidth=2);
 xlabel("time (s)", FontSize=14);
 ylabel("Steam Balance (kg/s)", FontSize=13);
 title("Steam Balance per Second Comparisons over Time", FontSize=14);
 
 subplot(4,1,3);
-plot(t2, wtank, 'o-', LineWidth=2);
+plot(t2, wtank, LineWidth=2);
 xlabel("time (s)", FontSize=14);
 ylabel("Steam in Tank (kg)", FontSize=13);
 title("Steam in Tank over Time", FontSize=14);
 
 subplot(4,1,4);
-plot(t2, excessH2O, 'o-', LineWidth=2);
+plot(t2, excessH2O, LineWidth=2);
 xlabel("time (s)", FontSize=14);
 ylabel("Steam Exhaust (kg)", FontSize=13);
 title("Steam Exhausted over Time", FontSize=14);

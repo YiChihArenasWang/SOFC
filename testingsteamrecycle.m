@@ -160,17 +160,19 @@ ylabel("Heat per Second Needed (kJ/s)", FontSize=18);
 title("Heat per Second Comparisons over Time", FontSize=18)
 legend('SOFC Heat', 'Fuel Reformer Heat', 'Heat Required to Heat up Methane', 'Heat Required to Heat up Steam', 'Total System Heat', fontsize=18);
 
-[warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam] = steamrecycle(vapordot,H2Oflowrate,H2Ounreactedflowrate, 4, 2);
+%% steam recycle
+
+[warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam] = steamrecyclewatertank(vapordot,H2Oflowrate,H2Ounreactedflowrate, 4, 2);
 
 figure(5) 
 
 
 subplot(4,1,1);
-plot(t2, FRneeddot, 'o-', LineWidth=2);
+plot(t2, FRneeddot, LineWidth=2);
 hold on;
-plot(t2, SOFCvapordot, 'o-', LineWidth=2);
+plot(t2, SOFCvapordot, LineWidth=2);
 hold on;
-plot(t2, FRreleasedot, 'o-', LineWidth=2);
+plot(t2, FRreleasedot, LineWidth=2);
 hold on;
 hold off;
 xlabel("time (s)", FontSize=14);
@@ -179,19 +181,19 @@ title("Steam per Second Comparisons over Time", FontSize=14);
 legend('Steam into Reformer', 'Steam Created by SOFC', 'Unreacted Steam out of Reformer');
 
 subplot(4,1,2);
-plot(t2, warray, 'o-', LineWidth=2);
+plot(t2, warray, LineWidth=2);
 xlabel("time (s)", FontSize=14);
 ylabel("Steam Balance (kg/s)", FontSize=13);
 title("Steam Balance per Second Comparisons over Time", FontSize=14);
 
 subplot(4,1,3);
-plot(t2, wtank, 'o-', LineWidth=2);
+plot(t2, wtank, LineWidth=2);
 xlabel("time (s)", FontSize=14);
 ylabel("Steam in Tank (kg)", FontSize=13);
 title("Steam in Tank over Time", FontSize=14);
 
 subplot(4,1,4);
-plot(t2, excessH2O, 'o-', LineWidth=2);
+plot(t2, excessH2O, LineWidth=2);
 xlabel("time (s)", FontSize=14);
 ylabel("Steam Exhaust (kg)", FontSize=13);
 title("Steam Exhausted over Time", FontSize=14);

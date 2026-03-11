@@ -1,4 +1,4 @@
-function [totalheatflowrate, heatdotLNGheating] = SystemHeatBalanceCalculations(LNGflowrate, heatdotfuelreformer, heatdotSOFC)
+function [totalheatflowrate, heatdotLNGheating, heatdotH2O] = SystemHeatBalanceCalculations(LNGflowrate, heatdotfuelreformer, heatdotSOFC, H2Ofr)
     
     % heating up methane calculations
     deltaHvap = 510.4; % kJ/kg
@@ -16,7 +16,21 @@ function [totalheatflowrate, heatdotLNGheating] = SystemHeatBalanceCalculations(
     q3 = LNGflowrate.*CpCH4g.*(Tf-Tbp);
     
     heatdotLNGheating = q1+q2+q3;
+
+    % water heating calculations 
+    cpH2Og = 1.865; %(kJ/(kg*K))
+    cpH2Ol = 4.22; % (kJ/(kg*K))
+    deltaHvapW = 2257; % kJ/kg at 1 atm
+    Tbpw = 100 + 273.15; % water boiling point
+    Tiw = 25 + 273.15; % water storage at room temperature
+    Tfw = 700 + 273.15; % K to heat up fuel reformer to
     
-    % combined total heat flow from methane heating, fuel reformer and SOFC
-    totalheatflowrate = heatdotLNGheating+heatdotfuelreformer+heatdotSOFC;
+    qa = H2Ofr .*cpH2Ol .* (Tbpw-Tiw); % kg/s*(kJ/(kg*K))*K = kJ/s
+    qb = H2Ofr .*deltaHvapW; % kJ/s
+    qc = H2Ofr .*cpH2Og .* (Tfw - Tbpw); % kJ/s
+
+    heatdotH2O = qa + qb + qc; % kJ/s
+    
+    % combined total heat flow from methane heating, water heating, fuel reformer and SOFC
+    totalheatflowrate = heatdotLNGheating+heatdotfuelreformer+heatdotSOFC + heatdotH2O;
 end

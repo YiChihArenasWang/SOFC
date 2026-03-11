@@ -142,16 +142,17 @@ totalheatfromreformer = sum(heatflowrate.*dt);
 disp("The total heat the reformer needs in kJ is: ");
 disp(totalheatfromreformer);
 
-% LNG Tank
+%% LNG Tank
 % mass fraction = mass of fuel/(mass of fuel and mass of tank)
 [tankmass] = LNGTank(LNGflowrate, dt);
 disp("The mass of the LNG tank in kg would be: ");
 disp(tankmass);
 
+%% Heat Balance
 % enthalpy calculations
-[totalheatflowrate, LNGheatingdot] = SystemHeatBalanceCalculations(LNGflowrate, heatflowrate, heatdot);
+[totalheatflowrate, LNGheatingdot, H2Oheatingdot] = SystemHeatBalanceCalculations(LNGflowrate, heatflowrate, heatdot, H2Oflowrate);
 total_heat = sum(totalheatflowrate.*dt);
-disp("The total enthalpy from heating up the LNG fuel and the fuel reformer and SOFC running in kJ is: ");
+disp("The total enthalpy from heating up the LNG fuel and water and from the fuel reformer and SOFC running in kJ is: ");
 disp(total_heat);
 
 figure(4);
@@ -161,14 +162,16 @@ plot(time, heatflowrate, LineWidth=2);
 hold on;
 plot(time, LNGheatingdot, LineWidth=2);
 hold on;
-plot(time, totalheatflowrate,LineWidth=2);
+plot(time, H2Oheatingdot, LineWidth=2);
+hold on;
+plot(time, totalheatflowrate, LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=18);
 ylabel("Heat per Second Needed (kJ/s)", FontSize=18);
 title("Heat per Second Comparisons over Time", FontSize=18)
-legend('SOFC Heat', 'Fuel Reformer Heat', 'Heat Required to Heat up Methane', 'Total System Heat', fontsize=18);
+legend('SOFC Heat', 'Fuel Reformer Heat', 'Heat Required to Heat up Methane', 'Heat Required to Heat up Steam', 'Total System Heat', fontsize=18);
 
-%%
+%% Steam Recycle
 
 [warray,wtank, wmin, winitial, SOFCvapordot, FRneeddot, FRreleasedot, t2, excessH2O, totalexhauststeam] = steamrecycle(vapordot,H2Oflowrate,H2Ounreactedflowrate, 30, 15);
 
