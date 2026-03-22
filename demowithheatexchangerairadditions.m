@@ -5,12 +5,11 @@ E = thrust_power_required(2,:).*1000;
 load("mission_t_v_h.mat");
 M = mission_t_v_h(3,:);
 V = mission_t_v_h(2,:);
-T = 800;
+T = 600;
 pH2 = 0.98;
 dt = 1;
 cells = SOFCsize(E,T,pH2);
-[H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw] = SOFC(E,T,pH2,dt,cells);
-
+[H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw,airdot,total_air] = SOFC(E,T,pH2,dt,cells);
 time = 0:(length(E)-1);
 time = time.*dt;
 %%
@@ -154,7 +153,7 @@ efficiency = 0.8; % randomly chosen for now
 Ti_air = -50 + 273.15;  % air at 35000 ft is around -50 deg C, to be changed
 % assuming air flow rate and final temp for air is given from SOFc
 
-[totalheatflowrate, LNGheatingdot, H2Oheatingdot, airheatingdot] = HeatExchanger(LNGflowrate, heatflowrate, heatdot, H2Oflowrate, efficiency, Ti_air, T, airfr);
+[totalheatflowrate, LNGheatingdot, H2Oheatingdot, airheatingdot] = HeatExchanger(LNGflowrate, heatflowrate, heatdot, H2Oflowrate, efficiency, Ti_air, T, airdot);
 total_heat = sum(totalheatflowrate.*dt);
 disp("The total enthalpy from heating up the LNG fuel and water and from the fuel reformer and SOFC running in kJ is: ");
 disp(total_heat);

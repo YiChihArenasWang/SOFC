@@ -1,4 +1,4 @@
-function [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw] = SOFC(E,T,pH2,dt,min_cells)
+function [H2dot,vapordot,heatdot,total_H2,total_vapor,total_heat,pdens,voltagedraw,currentdraw, airdot,total_air] = SOFC(E,T,pH2,dt,min_cells)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 temp = [700,750,800];
@@ -90,6 +90,10 @@ h20mol = h2mol;
 vapordot = h20mol.*18.02./1000; % kg/s
 total_vapor = sum(vapordot.*dt);
 
+O2mol = h2mol./2;
+O2dot = O2mol.*28.96./1000; % kg/s
+airdot = O2dot./0.21;
+total_air = sum(airdot.*dt);
 
 enthalpykg25 = -285.8/18.02*1000; % kJ/kg
 e2 = enthalpykg25 + 4.18*(100-25);
