@@ -36,6 +36,6 @@ function [totalheatflowrate, heatdotLNGheating, heatdotH2O, heatdotair] = HeatEx
     deltaTair = Tf_air - Ti_air; % K
     heatdotair = airfr .* cpair .* deltaTair; % kJ/s
     
-    % combined total heat flow from methane heating, water heating, fuel reformer and SOFC
+    % combined total heat flow from methane heating, water heating, air heating, fuel reformer and SOFC
     totalheatflowrate = heatdotLNGheating+heatdotfuelreformer+ (efficiency*heatdotSOFC) + heatdotH2O + heatdotair;
 end

@@ -2,6 +2,12 @@ clear
 
 load("FC_power_required.mat");
 E = thrust_power_required(2,:).*1000;
+for j = 1:8640
+    if E(j)<0
+        E(j)=0;
+    end
+end
+
 load("mission_t_v_h.mat");
 M = mission_t_v_h(3,:);
 V = mission_t_v_h(2,:);
@@ -151,7 +157,7 @@ disp(tankmass);
 % enthalpy calculations
 efficiency = 0.8; % randomly chosen for now
 Ti_air = -50 + 273.15;  % air at 35000 ft is around -50 deg C, to be changed
-% assuming air flow rate and final temp for air is given from SOFc
+% assuming air flow rate and final temp for air is given from SOFC
 
 [totalheatflowrate, LNGheatingdot, H2Oheatingdot, airheatingdot] = HeatExchanger(LNGflowrate, heatflowrate, heatdot, H2Oflowrate, efficiency, Ti_air, T, airdot);
 total_heat = sum(totalheatflowrate.*dt);
@@ -222,3 +228,4 @@ disp("The initial water amount in the tank in kg would be : ");
 disp(winitial);
 disp("The total amount of steam exhaust in kg is: ")
 disp(totalexhauststeam);
+
