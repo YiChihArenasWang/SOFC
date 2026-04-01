@@ -1,4 +1,4 @@
-function [totalheatflowrate, heatdotLNGheating, heatdotH2O, heatdotair] = HeatExchanger(LNGflowrate, heatdotfuelreformer, heatdotSOFC, H2Ofr, efficiency, Ti_air, Tf_air, airfr)
+function [totalheatflowrate, heatdotLNGheating, heatdotH2O, heatdotair, heatburner] = HeatExchanger(LNGflowrate, heatdotfuelreformer, heatdotSOFC, H2Ofr, efficiency, Ti_air, Tf_air, airfr)
     
     % heating up methane calculations
     deltaHvap = 510.4; % kJ/kg
@@ -35,7 +35,16 @@ function [totalheatflowrate, heatdotLNGheating, heatdotH2O, heatdotair] = HeatEx
     cpair =  1.005; %(kJ/(kg*K))
     deltaTair = Tf_air - Ti_air; % K
     heatdotair = airfr .* cpair .* deltaTair; % kJ/s
+
+    noburner = heatdotLNGheating+heatdotfuelreformer+ (efficiency*heatdotSOFC) + heatdotH2O + heatdotair;
+    heatburner = zeros(1, length(LNGflowrate));
+
+    for i=1:length(LNGflowrate)
+        if noburner(i)> 0
+            heatburner(i) = -noburner(i);
+        end
+    end
     
-    % combined total heat flow from methane heating, water heating, air heating, fuel reformer and SOFC
-    totalheatflowrate = heatdotLNGheating+heatdotfuelreformer+ (efficiency*heatdotSOFC) + heatdotH2O + heatdotair;
+    % combined total heat flow from methane heating, water heating, air heating, fuel reformer, burner, and SOFC
+    totalheatflowrate = heatdotLNGheating+heatdotfuelreformer+(efficiency*heatdotSOFC)+heatdotH2O+heatdotair+heatburner;
 end

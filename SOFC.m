@@ -92,7 +92,7 @@ total_vapor = sum(vapordot.*dt);
 
 O2mol = h2mol./2;
 O2dot = O2mol.*28.96./1000; % kg/s
-airdot = O2dot./0.21;
+airdot = O2dot./0.06;
 total_air = sum(airdot.*dt);
 
 enthalpykg25 = -285.8/18.02*1000; % kJ/kg

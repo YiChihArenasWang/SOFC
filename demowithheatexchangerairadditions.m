@@ -8,6 +8,9 @@ for j = 1:8640
     end
 end
 
+% splitting power load
+E = 0.3.*E;
+
 load("mission_t_v_h.mat");
 M = mission_t_v_h(3,:);
 V = mission_t_v_h(2,:);
@@ -159,7 +162,7 @@ efficiency = 0.8; % randomly chosen for now
 Ti_air = -50 + 273.15;  % air at 35000 ft is around -50 deg C, to be changed
 % assuming air flow rate and final temp for air is given from SOFC
 
-[totalheatflowrate, LNGheatingdot, H2Oheatingdot, airheatingdot] = HeatExchanger(LNGflowrate, heatflowrate, heatdot, H2Oflowrate, efficiency, Ti_air, T, airdot);
+[totalheatflowrate, LNGheatingdot, H2Oheatingdot, airheatingdot, burnerheat] = HeatExchanger(LNGflowrate, heatflowrate, heatdot, H2Oflowrate, efficiency, Ti_air, T, airdot);
 total_heat = sum(totalheatflowrate.*dt);
 disp("The total enthalpy from heating up the LNG fuel and water and from the fuel reformer and SOFC running in kJ is: ");
 disp(total_heat);
@@ -175,6 +178,8 @@ plot(time, H2Oheatingdot, LineWidth=2);
 hold on;
 plot(time, airheatingdot, LineWidth=2);
 hold on;
+plot(time, burnerheat, LineWidth=2);
+hold on;
 plot(time, totalheatflowrate, LineWidth=2);
 hold off;
 xlabel("time (s)", FontSize=18);
@@ -182,7 +187,8 @@ ylabel("Heat per Second Needed (kJ/s)", FontSize=18);
 title("Heat per Second Comparisons over Time", FontSize=18)
 legend('SOFC Heat', 'Fuel Reformer Heat', ...
     'Heat Required to Heat up Methane', 'Heat Required to Heat up Water', ...
-    'Heat Required to Heat up Air', 'Total System Heat', fontsize=18);
+    'Heat Required to Heat up Air', 'Heat from Burner', ...
+    'Total System Heat', fontsize=18);
 
 %% steam recycle
 
